@@ -34,9 +34,9 @@ build_sequence(Sequence_Backwards, _, 0, _, Sequence) :-
 build_sequence([Last_Vertex|Earlier_Vertices], Graph, Vertices_To_Add, Banned_Vertices, Sequence) :-
     neighbors(Last_Vertex, Graph, Lax_Candidates),
     ord_subtract(Lax_Candidates, Banned_Vertices, Candidates),
-    member(Next_Choice, Candidates),
     Vertices_To_Add_After is Vertices_To_Add - 1,
     ord_union(Banned_Vertices, Lax_Candidates, Banned_Vertices_After),
+    member(Next_Choice, Candidates),
     build_sequence([Next_Choice, Last_Vertex|Earlier_Vertices], Graph, Vertices_To_Add_After, Banned_Vertices_After, Sequence).
 
 
