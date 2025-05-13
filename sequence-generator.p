@@ -21,15 +21,16 @@ get_graph(File_Name, Graph) :-
         ), Bad_Vertices),
     del_vertices(Graph_Naive, Bad_Vertices, Graph).
 
-build_sequence(Sequence_Backwards, _, 0, _, Sequence) :-
-    !,
-    reverse(Sequence_Backwards, Sequence).
-
-% build_sequence([Last_Vertex|Earlier_Vertices], Graph, 1, _, Sequence) :- % adding last vertex: no restrictions (might even be the same as the start, or any other element!)
+% build_sequence(Sequence_Backwards, _, 0, _, Sequence) :-
 %     !,
-%     neighbors(Last_Vertex, Graph, Final_Candidates),
-%     member(Final_Choice, Final_Candidates),
-%     reverse([Final_Choice, Last_Vertex|Earlier_Vertices], Sequence).
+%     reverse(Sequence_Backwards, Sequence).
+
+build_sequence([Last_Vertex|Earlier_Vertices], Graph, 1, _, Sequence) :- % adding last vertex: "loops" allowed (but not repetition)
+    !,
+    neighbors(Last_Vertex, Graph, Final_Candidates),
+    member(Final_Choice, Final_Candidates),
+    \+ memberchk(Final_Choice, Earlier_Vertices), % disallow repetition
+    reverse([Final_Choice, Last_Vertex|Earlier_Vertices], Sequence_Backwards, Sequence).
 
 build_sequence([Last_Vertex|Earlier_Vertices], Graph, Vertices_To_Add, Banned_Vertices, Sequence) :-
     neighbors(Last_Vertex, Graph, Lax_Candidates),
